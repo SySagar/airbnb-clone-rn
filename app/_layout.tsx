@@ -1,11 +1,12 @@
+import { Ionicons } from '@expo/vector-icons';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
+import { Stack, useRouter } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
+import { Touchable, TouchableOpacity } from 'react-native';
 
-import { useColorScheme } from '@/components/useColorScheme';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -22,8 +23,7 @@ SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-    ...FontAwesome.font,
+    'mon': require('../assets/fonts/Montserrat.ttf')
   });
 
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.
@@ -45,13 +45,51 @@ export default function RootLayout() {
 }
 
 function RootLayoutNav() {
-  const colorScheme = useColorScheme();
+
+  const router = useRouter();
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+    <ThemeProvider value={DefaultTheme}>
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
+        <Stack.Screen 
+        name="(modals)/login"
+         options={{ 
+          title:'login',
+          animation: 'slide_from_bottom',
+          headerTitleStyle:{
+            fontFamily:'mon',
+            fontSize:20,
+            fontWeight:'bold'
+          },
+          presentation: 'modal',
+          headerLeft: ()=>(
+            <TouchableOpacity
+            onPress={()=>router.back()}
+            >
+              <Ionicons name="close" size={24} color="black" />
+            </TouchableOpacity>
+          )
+         }} />
+          <Stack.Screen
+           name="listing/[id]" 
+          options={{ 
+            headerTitle: '',
+           }} />
+            <Stack.Screen
+           name="(modals)/booking" 
+          options={{ 
+            headerTitle: 'Bookings',
+            animation: 'fade',
+            presentation: 'transparentModal',
+            headerLeft: ()=>(
+              <TouchableOpacity
+              onPress={()=>router.back()}
+              >
+                <Ionicons name="close" size={24} color="black" />
+              </TouchableOpacity>
+            )
+           }} />
       </Stack>
     </ThemeProvider>
   );
