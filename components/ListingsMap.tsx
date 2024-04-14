@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
-import React from 'react';
+import React, {memo} from 'react';
 // import MapView from 'react-native-map-clustering';
 import MapView from 'react-native-maps';
 import { Marker } from 'react-native-maps';
@@ -21,7 +21,7 @@ interface Props {
     longitudeDelta: 9,
   };
   
-const ListingsMap = ({ listings }: Props) => {
+const ListingsMap = memo(({ listings }: Props) => {
 
     const router = useRouter();
     const mapRef = useRef<any>(null);
@@ -102,7 +102,7 @@ const ListingsMap = ({ listings }: Props) => {
           key={item.properties.id}
           onPress={() => onMarkerSelected(item)}>
           <View style={styles.marker}>
-            <Text style={styles.markerText}>€ {item.properties.price}</Text>
+            <Text style={styles.markerText}>₹ {item.properties.price}</Text>
           </View>
         </Marker>
       ))}
@@ -112,7 +112,8 @@ const ListingsMap = ({ listings }: Props) => {
     </TouchableOpacity>
   </View>
   )
-}
+})
+
 
 const styles = StyleSheet.create({
     container: {

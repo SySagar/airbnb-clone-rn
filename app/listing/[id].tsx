@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
   },
   ratings: {
     fontSize: 16,
-    fontFamily: 'mon-sb',
+    fontFamily: 'mon',
   },
   divider: {
     height: StyleSheet.hairlineWidth,
